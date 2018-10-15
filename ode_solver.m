@@ -1,23 +1,36 @@
 %Ode Script
 
-x_0 = [0.005,-0.25,-0.005,0,pi/12,0];
+x_0 = [0.005,-0.5,0.005,0,pi/6,0];
 t_span = [0,0.5];
-t_vec = linspace(0,0.5,100000);
+t_vec = linspace(t_span(1),t_span(2),10000);
+opts = odeset('Mass', @mass_matrix, 'MassSingular', ',maybe');
 
-odeset = 
+[t,X] = ode15s(@rocker,t_vec,x_0,opts);
 
-[t,X] = ode15s(@rocker,t_vec,x_0);
-
-subplot(3,1,1);
+subplot(3,2,1);
 plot(t,X(:,5));
-legend({'$\dot{\phi}$','$\phi$'}, 'Interpreter','latex');
+legend({'$\phi$'}, 'Interpreter','latex');
 grid on
 
-subplot(3,1,2);
-plot(t,X(:,4));
-legend({'$\dot{\psi}$','$\psi$'}, 'Interpreter','latex');
+subplot(3,2,2);
+plot(t,X(:,2));
+legend({'$\dot{\phi}$'}, 'Interpreter','latex');
+grid on
 
-subplot(3,1,3);
+subplot(3,2,3);
+plot(t,X(:,4));
+legend({'$\psi$',}, 'Interpreter','latex');
+
+subplot(3,2,4);
+plot(t,X(:,1));
+legend({'$\dot{\psi}$'}, 'Interpreter','latex');
+
+subplot(3,2,5);
 plot(t,X(:,6));
-legend({'$\dot{\theta}$','$\theta$'}, 'Interpreter','latex');
+legend({'$\theta$'}, 'Interpreter','latex');
+
+subplot(3,2,6);
+plot(t,X(:,3));
+legend({'$\dot{\theta}$'}, 'Interpreter','latex');
+
 
