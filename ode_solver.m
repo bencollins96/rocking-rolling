@@ -3,8 +3,8 @@
 x_0 = [0.005,-0.5,0.005,0,pi/6,0];
 t_span = [0,0.5];
 t_vec = linspace(t_span(1),t_span(2),10000);
-opts = odeset('Mass', @mass_matrix, 'MassSingular', ',maybe');
 
+opts = odeset('Mass', @mass_matrix, 'MassSingular', 'maybe');
 [t,X] = ode15s(@rocker,t_vec,x_0,opts);
 
 subplot(3,2,1);
@@ -32,5 +32,3 @@ legend({'$\theta$'}, 'Interpreter','latex');
 subplot(3,2,6);
 plot(t,X(:,3));
 legend({'$\dot{\theta}$'}, 'Interpreter','latex');
-
-
