@@ -1,24 +1,20 @@
-function [dx] = rocker(~,x)
+function dx = rocker(~,x,p)
 
-%Define parameters
-m = 0.07;   A = 5.1e-3;
-C = 8e-3;   g = 9.8;
-R = 5.1e-2; H = 6.9e-2;
+%Reassign variables for easy reading
+dpsi = x(2);
+phi = x(3);
+dphi = x(4);
+dtheta = x(6);
 
-%redefine variables for easy reading.
-dpsi = x(1); 
-dphi = x(2);   
-phi = x(5);
-dtheta = x(3); 
+c_phi = cos(phi);
+s_phi = sin(phi);
 
-%No other variables appear as cosine/sine
-s_phi = sin(phi); c_phi = cos(phi);
+s1 = (p.C-2*p.A-2*p.m*p.H^2)*dpsi*dphi*c_phi + p.C*dphi*dtheta - 2*p.m*p.H*p.R*dpsi*dphi*s_phi;
+s2 = 0.5*(p.C-p.A+p.m*p.R^2-p.m*p.H^2)*(dpsi^2)*sin(2*phi)+(p.C+p.m*p.R^2)*dtheta*dpsi*s_phi ...
+    + p.m*p.H*p.R*dpsi*dtheta*c_phi + p.m*p.H*p.R*(dpsi^2)*cos(2*phi) + p.m*p.g*(p.R*c_phi - p.H*s_phi);
+s3 = p.C*dpsi*dphi*s_phi + 2*p.m*p.R*dpsi*dphi*(p.R*s_phi + p.H*c_phi);
 
-s1 =(C - 2*A - 2*m*H^2)*dpsi*dphi*c_phi + C*dphi*dtheta - 2*m*H*R*dpsi*dphi*s_phi;
-s2 =0.5*(C - A + m*R^2 - m*H^2)*(dpsi^2)*sin(2*phi) + (C + m*R^2)*dtheta*dpsi*s_phi...
-     + m*H*R*dpsi*dtheta*c_phi + m*H*R*(dpsi^2)*cos(2*phi) + m*g*(R*c_phi - H*s_phi);
-s3 = C*dpsi*dphi*s_phi + 2*m*R*dpsi*dphi*(R*s_phi + H*c_phi);
-           
-dx = [s1,s2,s3,dpsi,dphi,dtheta]';
+dx = [x(2),s1,x(4),s2,x(6),s3]';
+
 
 end
