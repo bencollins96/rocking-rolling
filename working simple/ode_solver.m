@@ -11,10 +11,10 @@ tLim =[0,5];
 tSpan = linspace(tLim(1), tLim(2),1000000);
 
 %Ode options
-%opts = odeset('Mass',@(t,x)mass_matrix(t,x,p));
+opts = odeset('Mass',@(t,x)mass_matrix(t,x,p));
 
 %Solver the ode with the mass matrix
-[t,X] = ode15s(@(t,x) rocker_part5(t,x,p),tSpan,x0);
+[t,X] = ode15s(@(t,x) rocker(t,x,p),tSpan,x0,opts);
 
 %Calculate the force on the contact point and the required coefficient of
 %friction
