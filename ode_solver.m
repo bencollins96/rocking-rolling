@@ -8,13 +8,11 @@ p = parameters();
 
 %Define the time limit + time vector
 tLim =[0,5];
-tSpan = linspace(tLim(1), tLim(2),1000000);
+tSpan = linspace(tLim(1),tLim(2),1000000);
 
-%Ode options
-%opts = odeset('Mass',@(t,x)mass_matrix(t,x,p));
-
+%Ode option
 %Solver the ode with the mass matrix
-[t,X] = ode15s(@(t,x) rocker_part5(t,x,p),tSpan,x0);
+[t,X] = ode15s(@(t,x) rocker_part10(t,x,p),tSpan,x0);
 
 %Calculate the force on the contact point and the required coefficient of
 %friction
