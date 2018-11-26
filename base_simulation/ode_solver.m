@@ -1,10 +1,10 @@
 close all 
 
 %Intial conditions
-x0 = [0,0.2,pi/100,0,0,-0.2];
+x0 = [0,0.005,pi/12,-0.1,0,0.005];
 
 %Initial Conditions: "Chaos in a Soda Can" AGREEMENT!
-%x0 = [0,0.005,pi/8,-1,0.005,0];
+x0 = [0,0.3,pi/8,-0.8,pi,0];
 
 %Define the parameters
 p = parameters();
@@ -15,31 +15,19 @@ tSpan = linspace(tLim(1),tLim(2),1000000);
 
 %Ode option
 %Solver the ode with the mass matrix
-[t,X] = ode15s(@(t,x) rocker(t,x,p),tSpan,x0);
+[t,X] = ode15s(@(t,x) rocker_part10(t,x,p),tSpan,x0);
 
 %Calculate the force on the contact point and the required coefficient of
 %friction
 F = zeros(length(X),2);
 mu = zeros(length(X),1);
 
-y = zeros(length(X),1);
-
 for i=1:length(X)
-    %Calculate the friction
     [F_n,F_r] = friction(X(i,:),p);
     F(i,1) = F_n;
     F(i,2) = F_r;
     mu(i) = F(i,2)/F(i,1);
-    
-    %Calculate dtheta/dpsi
-    y(i)= dtheta_dpsi(X(i,:),p);
 end
-
-%Plot dtheta/dpsi
-figure
-plot(t,y)
-title('dtheta/dpsi')
-
 
 %Plot the results
 figure 
@@ -82,7 +70,7 @@ legend({'Coefficient of Friction'},'Interpreter','latex')
 figure
 hold on
 plot(X(:,2),X(:,6))
-x = linspace(0,20,2);
+x = linspace(0,-20000,2);
 y = -x;
 plot(x,y,'r')
 xlabel('dpsi')

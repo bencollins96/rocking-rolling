@@ -6,7 +6,7 @@ phi = x(3);
 dphi = x(4);
 dtheta = x(6);
 
-dx = rocker(1,x,p);
+dx = rocker_part10(1,x,p);
 
 ddpsi = dx(2);
 ddphi = dx(4);
